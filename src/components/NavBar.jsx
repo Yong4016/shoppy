@@ -5,19 +5,13 @@ import { FiShoppingBag } from 'react-icons/fi';
 import { BsFillPencilFill, BsCartFill } from 'react-icons/bs';
 import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 import { onUserStateChange, signInWithGoogle, signOutWithGoogle } from '../api/firebase';
+import User from './User';
 
 const NavBar = () => {
   const [user, setUser] = useState();
-  const handleSignIn = () => {
-    signInWithGoogle().then((user) => setUser(user));
-  };
-  const handleSignOut = () => {
-    signOutWithGoogle().then((user) => setUser(user));
-  };
 
   useEffect(() => {
     onUserStateChange((user) => {
-      console.log(user);
       setUser(user);
     });
   }, []);
@@ -31,7 +25,7 @@ const NavBar = () => {
         <FiShoppingBag />
         <h1>Shoppy</h1>
       </Link>
-      <nav className='flex  items-center gap-6 font-semibold'>
+      <nav className='flex items-center gap-6 font-semibold'>
         <Link
           to='/products'
           className='text-2xl'
@@ -53,9 +47,10 @@ const NavBar = () => {
         >
           <BsCartFill />
         </Link>
+        {user && <User user={user} />}
         {!user && (
           <button
-            onClick={handleSignIn}
+            onClick={signInWithGoogle}
             className='text-2xl'
             title='Login'
           >
@@ -64,7 +59,7 @@ const NavBar = () => {
         )}
         {user && (
           <button
-            onClick={handleSignOut}
+            onClick={signOutWithGoogle}
             className='text-2xl'
             title='Logout'
           >
