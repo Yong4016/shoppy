@@ -5,13 +5,13 @@ import { FiShoppingBag } from 'react-icons/fi';
 import { BsFillPencilFill, BsCartFill } from 'react-icons/bs';
 import { onUserStateChange, signInWithGoogle, signOutWithGoogle } from '../api/firebase';
 import User from './User';
+import Button from './ui/Button';
 
 const NavBar = () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
     onUserStateChange((user) => {
-      console.log(user);
       setUser(user);
     });
   }, []);
@@ -33,13 +33,16 @@ const NavBar = () => {
         >
           <FaClipboardList />
         </Link>
-        <Link
-          to='/products/new'
-          className='text-2xl'
-          title='Add New'
-        >
-          <BsFillPencilFill />
-        </Link>
+        {user && user.isAdmin && (
+          <Link
+            to='/products/new'
+            className='text-2xl'
+            title='Add New'
+          >
+            <BsFillPencilFill />
+          </Link>
+        )}
+
         <Link
           to='/cart'
           className='text-2xl'
@@ -48,8 +51,19 @@ const NavBar = () => {
           <BsCartFill />
         </Link>
         {user && <User user={user} />}
-        {!user && <button onClick={signInWithGoogle}>Login</button>}
-        {user && <button onClick={signOutWithGoogle}>Logout</button>}
+        {!user && (
+          <Button
+            text={'Login'}
+            onClick={signInWithGoogle}
+          />
+        )}
+
+        {user && (
+          <Button
+            text={'Logout'}
+            onClick={signOutWithGoogle}
+          />
+        )}
       </nav>
     </header>
   );
