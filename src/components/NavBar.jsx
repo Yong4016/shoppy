@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FaClipboardList } from 'react-icons/fa';
 import { FiShoppingBag } from 'react-icons/fi';
 import { BsFillPencilFill, BsCartFill } from 'react-icons/bs';
-import { RiLoginBoxFill, RiLogoutBoxFill } from 'react-icons/ri';
 import { onUserStateChange, signInWithGoogle, signOutWithGoogle } from '../api/firebase';
 import User from './User';
 
@@ -12,6 +11,7 @@ const NavBar = () => {
 
   useEffect(() => {
     onUserStateChange((user) => {
+      console.log(user);
       setUser(user);
     });
   }, []);
@@ -48,24 +48,8 @@ const NavBar = () => {
           <BsCartFill />
         </Link>
         {user && <User user={user} />}
-        {!user && (
-          <button
-            onClick={signInWithGoogle}
-            className='text-2xl'
-            title='Login'
-          >
-            <RiLoginBoxFill />
-          </button>
-        )}
-        {user && (
-          <button
-            onClick={signOutWithGoogle}
-            className='text-2xl'
-            title='Logout'
-          >
-            <RiLogoutBoxFill />
-          </button>
-        )}
+        {!user && <button onClick={signInWithGoogle}>Login</button>}
+        {user && <button onClick={signOutWithGoogle}>Logout</button>}
       </nav>
     </header>
   );
