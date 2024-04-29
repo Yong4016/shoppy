@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaClipboardList } from 'react-icons/fa';
 import { FiShoppingBag } from 'react-icons/fi';
 import { BsFillPencilFill, BsCartFill } from 'react-icons/bs';
-import { onUserStateChange, signInWithGoogle, signOutWithGoogle } from '../api/firebase';
 import User from './User';
 import Button from './ui/Button';
+import { useAuthContext } from './context/AuthContext';
 
 const NavBar = () => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    onUserStateChange((user) => {
-      setUser(user);
-    });
-  }, []);
-
+  const { user, signInWithGoogle, signOutWithGoogle } = useAuthContext();
   return (
     <header className='flex justify-between p-2 border-b border-gray-300'>
       <Link
@@ -28,28 +21,29 @@ const NavBar = () => {
       <nav className='flex items-center gap-6 font-semibold'>
         <Link
           to='/products'
-          className='text-2xl'
-          title='Show All'
+          className='text-2xl text-gray-700'
+          title='Show Products'
         >
           <FaClipboardList />
         </Link>
         {user && user.isAdmin && (
           <Link
             to='/products/new'
-            className='text-2xl'
+            className='text-2xl text-gray-700'
             title='Add New'
           >
             <BsFillPencilFill />
           </Link>
         )}
-
-        <Link
-          to='/cart'
-          className='text-2xl'
-          title='MyCart'
-        >
-          <BsCartFill />
-        </Link>
+        {user && (
+          <Link
+            to='/cart'
+            className='text-2xl text-gray-700'
+            title='MyCart'
+          >
+            <BsCartFill />
+          </Link>
+        )}
         {user && <User user={user} />}
         {!user && (
           <Button

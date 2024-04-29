@@ -8,7 +8,7 @@ const User = ({ user: { photoURL, displayName } }) => {
         src={photoURL}
         alt={displayName}
       />
-      <span className='hidden md:block font-medium'>{displayName}</span>
+      <span className='hidden md:block font-medium text-gray-700'>{displayName}</span>
     </div>
   );
 };
