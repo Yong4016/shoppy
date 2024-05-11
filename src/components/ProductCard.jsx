@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
       onClick={() => {
         navigate(`/products/${product.id}`, { state: { product } });
       }}
-      className='rounded-lg overflow-hidden shadow-md cursor-pointer transition-all hover:scale-105'
+      className='rounded-lg overflow-hidden shadow-md cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1'
     >
       <img
         className='w-full'

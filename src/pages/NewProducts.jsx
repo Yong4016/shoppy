@@ -1,27 +1,31 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 import { uploadImage } from '../api/uploader';
-import { addNewProduct } from '../api/firebase';
+import useProducts from '../hooks/useProducts';
 
 const NewProducts = () => {
   const [product, setProduct] = useState({});
   const [file, setFile] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState();
+  const { addProduct } = useProducts();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsUploading(true);
     uploadImage(file)
       .then((url) => {
-        addNewProduct(product, url).then(() => {
-          setSuccess('Added item successfully.');
-          setTimeout(() => {
-            setSuccess(null);
-          }, 4000);
-          setProduct({});
-          setFile(undefined);
-        });
+        addProduct.mutate(
+          { product, url },
+          {
+            onSuccess: () => {
+              setSuccess('Added item successfully.');
+              setTimeout(() => {
+                setSuccess(null);
+              }, 4000);
+            },
+          }
+        );
       })
       .finally(() => {
         setIsUploading(false);
@@ -36,7 +40,7 @@ const NewProducts = () => {
     setProduct((product) => ({ ...product, [name]: value }));
   };
   return (
-    <section className='w-full text-center '>
+    <section className='w-full text-center mb-8'>
       <h2 className='text-2xl font-bold my-4'>Add New Product</h2>
       {success && <p className='my-2'>✅ {success}</p>}
       {file && (

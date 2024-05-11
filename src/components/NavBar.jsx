@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaClipboardList } from 'react-icons/fa';
 import { FiShoppingBag } from 'react-icons/fi';
-import { BsFillPencilFill, BsCartFill } from 'react-icons/bs';
+import { BsFillPencilFill } from 'react-icons/bs';
 import User from './User';
 import Button from './ui/Button';
-import { useAuthContext } from './context/AuthContext';
+import { useAuthContext } from '../context/AuthContext';
+import CartStatus from './CartStatus';
 
 const NavBar = () => {
   const { user, signInWithGoogle, signOutWithGoogle } = useAuthContext();
@@ -21,7 +22,7 @@ const NavBar = () => {
       <nav className='flex items-center gap-6 font-semibold'>
         <Link
           to='/products'
-          className='text-2xl text-gray-700'
+          className='text-3xl text-gray-700'
           title='Show Products'
         >
           <FaClipboardList />
@@ -29,7 +30,7 @@ const NavBar = () => {
         {user && user.isAdmin && (
           <Link
             to='/products/new'
-            className='text-2xl text-gray-700'
+            className='text-3xl text-gray-700'
             title='Add New'
           >
             <BsFillPencilFill />
@@ -38,10 +39,10 @@ const NavBar = () => {
         {user && (
           <Link
             to='/cart'
-            className='text-2xl text-gray-700'
+            className='text-gray-700'
             title='MyCart'
           >
-            <BsCartFill />
+            <CartStatus />
           </Link>
         )}
         {user && <User user={user} />}
