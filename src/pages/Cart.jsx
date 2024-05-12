@@ -1,18 +1,17 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getCart } from '../api/firebase';
-import { useAuthContext } from '../context/AuthContext';
 import CartItem from '../components/CartItem';
 import PriceCard from '../components/PriceCard';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import { FaEquals } from 'react-icons/fa';
 import Button from '../components/ui/Button';
+import useCart from '../hooks/useCart';
 
 const SHIPPING = 7.99;
 
 const Cart = () => {
-  const { uid } = useAuthContext();
-  const { isPending, data: products } = useQuery({ queryKey: ['cart'], queryFn: () => getCart(uid) });
+  const {
+    cartQuery: { isPending, data: products },
+  } = useCart();
 
   if (isPending) return <p>Loading...</p>;
   const hasProducts = products && products.length > 0;
@@ -29,7 +28,7 @@ const Cart = () => {
               <CartItem
                 key={product.id}
                 product={product}
-                uid={uid}
+                // uid={uid}
               />
             ))}
           </ul>
@@ -49,9 +48,7 @@ const Cart = () => {
               price={totalPrice + SHIPPING}
             />
           </div>
-          <Button
-            text='Checkout'
-          />
+          <Button text='Checkout' />
         </>
       )}
     </section>
